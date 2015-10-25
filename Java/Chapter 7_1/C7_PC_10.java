@@ -56,6 +56,7 @@ public class C7_PC_10
       for (loopCounter = 0; loopCounter < DATA_SIZE; loopCounter++)
       {
         System.out.print("[" + testData[loopCounter] + "] ");
+        // Testing something out here
       }
 
       // New Line
