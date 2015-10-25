@@ -1,0 +1,95 @@
+/* C2_P1.c
+    Author: Billy Hart    Last Modified by: Billy Hart
+    Assignment: Chapter 2 Project #1
+    Date Last Modified: October 1, 2015
+    Program Description:
+    Reads an integer value entered by the user and displays it in its octal (base 8) equivalent
+*/
+
+#include <stdio.h>
+
+// Function Declarations
+int convertToOctal(int decimalValue);
+int getNextOctalValueFrom(int decimalValue);
+int addNewDigitTo(int priorOctalValue, int newOctalValue);
+int getNextDecimalValueFrom(int decimalValue);
+int reverseOctalValue(int convertedOctalValue);
+
+
+// Main Loop()
+int main() {
+
+  // Local Variables
+  int userNumberToConvertToOctal, numberConvertedToOctal;
+
+  // Simulated Input
+  userNumberToConvertToOctal = 9999;
+
+  // Ask the user for the number to convert
+  printf("Enter a number between 0 and 32767: \n");
+  // Store the value to convert
+  scanf("%d", userNumberToConvertToOctal);
+
+  // Convert given number to binary
+  numberConvertedToOctal = convertToOctal(userNumberToConvertToOctal);
+
+  // Display the converted output to user
+  printf("In octal, your number is: %.5d\n", numberConvertedToOctal);
+
+  // Release memory
+  return (0);
+}
+
+int convertToOctal(int decimalValue) {
+  // Local Variables
+  int newOctalValue, priorOctalValue,
+       convertedOctalValue = 0;
+
+    // Keep dividing by 8 until 0
+    while (decimalValue != 0) {
+        // Convert the given decimal to octal
+        newOctalValue = getNextOctalValueFrom(decimalValue);
+        // Take the remainder and store it to the end of the int-chain
+        convertedOctalValue = addNewDigitTo(convertedOctalValue, newOctalValue);
+        // Grab the next decimal from the division and loop()
+        decimalValue = getNextDecimalValueFrom(decimalValue);
+    }
+  // Return the octal int chain in reversed order
+  return reverseOctalValue(convertedOctalValue);
+}
+
+int getNextOctalValueFrom(int decimalValue) {
+  // Octal value is the remainder after dividing by 8
+    int nextOctalDigit = decimalValue % 8;
+    // If the mod returns 0, swap for 8. Critical for keeping 0's in octal-reversal
+    return ((nextOctalDigit != 0) ? nextOctalDigit : 8);
+}
+
+int addNewDigitTo(int priorOctalValue, int newOctalValue) {
+  // Returns an integer chain of old value concat new value
+   return priorOctalValue * 10 + newOctalValue;
+}
+
+int getNextDecimalValueFrom(int decimalValue) {
+  // Returns the original number divided by 8
+  return decimalValue /= 8;
+}
+
+int reverseOctalValue(int convertedOctalValue) {
+  //Local Variables
+  int reversedOctalValue = 0, reversedOctalDigit;
+  // if the value isn't 0..
+  while (convertedOctalValue != 0) {
+   // Take the reversed temp string and multiply it by 10
+   reversedOctalValue = reversedOctalValue * 10;
+   // If the mod returned from that value divided by 10 isn't 8, then return the mod 10
+   // otherwise return 0. (reverse 8 mod to account for 0's)
+   reversedOctalDigit = ((convertedOctalValue % 10 != 8 )? (convertedOctalValue % 10) : 0);
+   // Add together the result to the original value
+   reversedOctalValue = reversedOctalValue + reversedOctalDigit;
+   // Divide it by 10 and store it into main --> pass to temp
+   convertedOctalValue = convertedOctalValue / 10;
+  }
+  // Return the octal code as a reversed integer
+  return reversedOctalValue;
+}

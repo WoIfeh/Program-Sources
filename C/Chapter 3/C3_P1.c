@@ -1,0 +1,70 @@
+*/ C3_P1.c
+    Author: Billy Hart    Last Modified by: Billy Hart
+    Assignment: Chapter 3 Project #1
+    Date Last Modified: October 1, 2015
+    Program Description:
+    Calculates the tax due by user based on entered amount of taxable income
+*/
+
+#include <stdio.h>
+
+// Function Declarations
+float calculateTaxDueFor(int taxableIncome);
+
+// Main Loop()
+int main() {
+
+// Local Variables
+  int taxableIncome;
+  float calculatedTaxDue;
+
+// Simulated Input
+taxableIncome = 2855;
+
+// Ask the user for their taxable income amount
+  printf("Enter the amount of taxable income: \n");
+
+// Store the amount for calculations
+scanf("%d", &taxableIncome);
+
+// Calculate the amount of tax due
+calculatedTaxDue = calculateTaxDueFor(taxableIncome);
+
+//Display the amount of tax due
+  printf("Based on your income of $%d, you owe $%.2f in tax.\n", taxableIncome, calculatedTaxDue);
+
+// Release memory
+return (0);
+}
+
+float calculateTaxDueFor(int taxableIncome){
+  //Local Variables
+  float calculatedTaxDue;
+
+  if (taxableIncome < 750){
+    // 1% of amount
+    calculatedTaxDue = taxableIncome * 0.01;
+  }
+  else if (taxableIncome >= 750 && taxableIncome <= 2249){
+    // $7.50 plus 2% of amount over $750
+    calculatedTaxDue = (7.5 + ((taxableIncome - 750) * 0.02));
+  }
+  else if (taxableIncome >= 2250 && taxableIncome <= 3749){
+    // $37.50 plus 3% of amount over $2250
+    calculatedTaxDue = (37.5 + ((taxableIncome - 2250) * 0.03));
+  }
+  else if (taxableIncome >= 3750 && taxableIncome <= 5249){
+    // $82.50 plus 4% of amount over $3750
+    calculatedTaxDue = (82.5 + ((taxableIncome - 3750) * 0.04));
+  }
+  else if (taxableIncome >= 5250 && taxableIncome <= 6999){
+    // $142.50 plus 5% of amount over $5250
+    calculatedTaxDue = (142.5 + ((taxableIncome - 5250) * 0.05));
+  }
+  else{ // $7,000+
+    // $230.00 plus 6% of amount over $7000
+    calculatedTaxDue = (230 + ((taxableIncome - 7000) * 0.06));
+  }
+
+  return calculatedTaxDue;
+}

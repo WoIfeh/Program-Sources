@@ -1,0 +1,167 @@
+/*
+ * ###############################################################################
+ * Name: Billy Hart
+ * Chapter: 4 (Part 1)
+ * Assignment: Programming Challenge #4
+ * Date: 09/17/15
+ * Description: Calculates the number of days user would have to work to earn
+ * 		the amount they've specified. Calculation is based on a 
+ * 		double-growth formula applied to their starting salary, which 
+ *		increases daily until its total either matches or exceeds the
+ * 		users desired amount. The results are displayed with a simple
+ *		table showing the amount of days required and the total of the
+ *		salary to that matching day in a single row. The last line 
+ *		reports to the user how many days of work were required to meet 
+ * 		the desired earned amount initially provided.
+ * ###############################################################################
+*/
+
+/*____- * - Grade - * -____
+ |                         |
+ |                         |
+ |                         |
+ |                         |
+ |                         |
+ |                         |
+ |_________________________|
+*/
+
+/*
+ * ## Pseudo #####################################################################
+ * Display "How much do you need to earn: $"
+ * Retrieve and convert and store the amount as pennies
+ * Display "Day"          "Amount"  as the start of the table
+ * While pennyCount < earnedAmount
+ *	double pennyCount
+ *	daycount++
+ *	Display day		pennyCount
+ * with pennyCount converted back to a dollar amount
+ * Display "It requires {day} days to earn {desired}
+ * ###############################################################################
+*/
+
+// Includes
+import java.util.Scanner;
+
+public class C4_PC_4
+{
+    public static void main(String[] args)
+    {
+        // Enable user input
+        Scanner userInput = new Scanner(System.in);
+        
+        // Local Vars
+        float userDesiredEarnedAmount, desiredAmountAsPennies;
+        float currentPennyCount = 1.0F;
+        int   dayNumber = 1;
+        
+        //Ask the user how much they need to earn
+        System.out.print("How much do you need to earn: $");
+        // Retrieve and store the value
+        userDesiredEarnedAmount = userInput.nextFloat();
+        // Convert input value into pennies
+        desiredAmountAsPennies  = userDesiredEarnedAmount * 100.0F;
+        
+        /* Start displaying the table
+        Use a hard coded day 1, because we will start each run on the
+	same day with the same value of 1 cent. No need to add 
+	conditional handling for a constant-intital value */
+        System.out.println();
+        System.out.println("Day		Amount");
+        System.out.println("---		------");
+        System.out.println("1		$0.01");
+        
+        /* Compare pennies to pennies
+        If the current count is less than or equal to what 
+        the user entered...*/
+        while (currentPennyCount <= desiredAmountAsPennies)
+       	{
+           // Then..double the value of the penny
+           currentPennyCount = currentPennyCount * 2.0F;
+           // Increment days to account for the next day
+	   dayNumber += 1;
+	   /* Display a row of the table with..
+	            day      amount
+	   Return amount as pennies converted back to 
+	   dollars before displaying it to the user */
+	   System.out.println(dayNumber + "		" + "$" + 
+	       	             (currentPennyCount / 100.0F));
+     	}
+
+	// Report to the user the number of days required
+	System.out.println();
+	System.out.println("It requires at least " + dayNumber + 
+			   " days to earn $" + userDesiredEarnedAmount);
+		
+        // Exit
+        System.exit(0);
+    }
+}
+
+// ## Results ####################################################################
+
+--------------------Configuration: <Default>--------------------
+How much do you need to earn: $0.10
+
+Day     Amount
+---     ------
+1       $0.01
+2       $0.02
+3       $0.04
+4       $0.08
+5       $0.16
+
+It requires at least 5 days to earn $0.10
+
+Process completed.
+
+--------------------Configuration: <Default>--------------------
+How much do you need to earn: $17.15
+
+Day     Amount
+---     ------
+1       $0.01
+2       $0.02
+3       $0.04
+4       $0.08
+5       $0.16
+6       $0.32
+7       $0.64
+8       $1.28
+9       $2.56
+10      $5.12
+11      $10.24
+12      $20.48
+
+It requires at least 12 days to earn $17.15
+
+Process completed.
+
+--------------------Configuration: <Default>--------------------
+How much do you need to earn: $2015.51
+
+Day     Amount
+---     ------
+1       $0.01
+2       $0.02
+3       $0.04
+4       $0.08
+5       $0.16
+6       $0.32
+7       $0.64
+8       $1.28
+9       $2.56
+10      $5.12
+11      $10.24
+12      $20.48
+13      $40.96
+14      $81.92
+15      $163.84
+16      $327.68
+17      $655.36
+18      $1310.72
+19      $2621.44
+
+It requires at least 19 days to earn $2015.51
+
+Process completed.

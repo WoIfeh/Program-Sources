@@ -1,0 +1,115 @@
+/* C4_P2.c
+    Author: Billy Hart    Last Modified by: Billy Hart
+    Assignment: Chapter 4 Project #2
+    Date Last Modified: October 2, 2015
+    Program Description:
+    A set of numbers are taken in and compared. 
+    The lowest and highest values from the set are extracted
+    and all numbers between are displayed to the user in accending order.
+*/
+
+#include <stdio.h>
+
+int main() {
+  // Local Variables
+  int userNumber = 1;
+  int minInt = 0, maxInt = 0;
+
+  // Display some general instructions to the user
+    printf("Please enter a series of integers between 1 and 100 inclusive.\n");
+    printf("Entering a number outside of that range will end the input process.
+                                                                        \n\n");
+  // Post-Check to make sure that the users value falls within the given range
+  while (userNumber >= 1 && userNumber <= 100) {
+    // Ask for the users value
+    printf("Enter Number: ");
+    // Store the value given by the user
+    scanf("%d", &userNumber);
+
+    // Pre-Check to make sure that the users value falls within the given range
+    if (userNumber >= 1 && userNumber <= 100) {
+        // If it's the first run or the smallest int, store the value
+        if (userNumber < minInt || minInt == 0) {
+          minInt = userNumber;
+        }
+        // If it's the first run or the largest int, store the value
+        else if (userNumber > maxInt || minInt == 0) {
+          maxInt = userNumber;
+        }
+    }
+  }
+
+  // Loop between min-max
+  while (minInt <= maxInt) {
+    // Display the results to the user
+    printf("%d\n", minInt);
+    // Increment counter
+    minInt++;
+  }
+
+  // Release memory
+  return (0);
+}
+
+// Compile Run Results ------------------------------------------------------------
+Please enter a series of integers between 1 and 100 inclusive.
+Entering a number outside of that range will end the input process.
+
+Enter Number: 45
+Enter Number: 55
+Enter Number: 44
+Enter Number: 56
+Enter Number: -1
+
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+[Finished in 0.1s]
+
+Please enter a series of integers between 1 and 100 inclusive.
+Entering a number outside of that range will end the input process.
+
+Enter Number: 7
+Enter Number: 5
+Enter Number: 4
+Enter Number: 6
+Enter Number: -1
+
+4
+5
+6
+7
+[Finished in 0.1s]
+
+Please enter a series of integers between 1 and 100 inclusive.
+Entering a number outside of that range will end the input process.
+
+Enter Number: 23
+Enter Number: 11
+Enter Number: 19
+Enter Number: -1
+
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+[Finished in 0.1s]

@@ -1,0 +1,82 @@
+/* MoneyToCoinExchange.c
+      Author: Billy Hart	Last Modified by: Billy Hart
+      Assignment: Chapter 2 Project
+      Date Last Modified: September 22, 2015
+      Program Description:
+      Converts an amount of money given by the user into its coin
+      equivalent using the least amount of coins possible, which
+      is then displayed to the user.
+*/
+
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+
+   float totalMoneyFromUser; // money, input by user
+   int totalMoneyAsPennies;  // money converted into pennies
+   int CS_Quaters = 0, CS_Dimes = 0; // amount of coins
+   int CS_Nickels = 0, CS_Pennies = 0; // money is converted into
+   const int quatersValue = 25, dimesValue = 10, nickelsValue = 5;
+
+   // Ask for user input
+   printf("Please enter the amount of money you have: ");
+
+   // Store the value in totalMoneyFromUser
+   scanf("%f", &totalMoneyFromUser);
+
+   // Convert the total into pennies so that coin amounts can be
+   // taken out most efficiently with bit shifting.
+   // O(n) #best# time complexity
+   totalMoneyAsPennies = (int)round(totalMoneyFromUser * 100);
+
+   // Extract the number of [coins] from total pennies
+   // I chose to use a modified Greedy algorithm as it has a lower
+   // bound than using the modulo operand, which C isn't optimized to use.
+   // Formula: https://en.wikipedia.org/wiki/Greedy_algorithm/
+   CS_Quaters =  floor(totalMoneyAsPennies / quatersValue);
+   int quarterReturn = totalMoneyAsPennies - CS_Quaters * quatersValue;
+   CS_Dimes =    floor(quarterReturn / dimesValue);
+   int dimeReturn = quarterReturn - CS_Dimes * dimesValue;
+   CS_Nickels =   floor(dimeReturn / nickelsValue);
+   CS_Pennies =  floor(dimeReturn - CS_Nickels * nickelsValue);
+
+   // Multi-Line prints for clarity to display the results to the user.
+   printf("\n\n"); // New line break
+   printf("$%.2f is equivalent to:\n", totalMoneyFromUser);
+   printf("Quarters..: %d\n", CS_Quaters);
+   printf("Dimes.....: %d\n", CS_Dimes);
+   printf("Nickels...: %d\n", CS_Nickels);
+   printf("Pennies...: %d\n", CS_Pennies);
+
+   // Release memory
+   return (0);
+}
+
+// Compile Run Results --------------------------------------------------------------
+Please enter the amount of money you have: $4.66
+
+$4.66 is equivalent to:
+Quarters..: 18
+Dimes.....: 1
+Nickels...: 1
+Pennies...: 1
+[Finished in 0.1s]
+
+Please enter the amount of money you have: $28.66
+
+$28.66 is equivalent to:
+Quarters..: 114
+Dimes.....: 1
+Nickels...: 1
+Pennies...: 1
+[Finished in 0.1s]
+
+Please enter the amount of money you have: $0.41
+
+$0.41 is equivalent to:
+Quarters..: 1
+Dimes.....: 1
+Nickels...: 1
+Pennies...: 1
+[Finished in 0.1s]

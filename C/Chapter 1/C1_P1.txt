@@ -1,0 +1,62 @@
+/* CelsiusToFahrenheit.c
+    Author: Billy Hart    Last Modified by: Billy Hart
+    Assignment: Chapter 1 Project # 1
+    Date Last Modified: September 22, 2015
+    Program Description:
+    Converts a given celsius temperature to its fahrenheit equivalent.
+*/
+
+
+#include <stdio.h>
+
+// Function to perform conversion calculations
+float convertCelsiusToFahrenheit(float celsiusTempFromUser);
+
+int main() {
+float celsiusTempFromUser; // Temperature input from user
+float fahrenheitTemperature; // Fahrenheit equivalent of given temperature
+
+// Ask user for celsius temperature
+printf("Enter the celsius temperature: ");
+
+// Store the given input
+scanf("%f", &celsiusTempFromUser);
+
+// Function call to convert temperatures
+// Store result for display
+fahrenheitTemperature = convertCelsiusToFahrenheit(celsiusTempFromUser);
+
+// Display the results to the user
+printf("\n");
+printf("The Celsius temperature %.1f is equivalent to %.2f\n",
+        celsiusTempFromUser, fahrenheitTemperature);
+
+// Release memory
+return (0);
+}
+
+float convertCelsiusToFahrenheit(float celsiusTempFromUser) {
+  // Local variable to return
+  float convertedFarhenheitTemperature;
+
+  // Formula: http://www.farenheittocelsius.com/
+  convertedFarhenheitTemperature = (celsiusTempFromUser * 9/5 + 32);
+
+  // Return converted temperature on call
+  return(convertedFarhenheitTemperature);
+}
+
+
+// Compile Run Results ------------------------------------------------------------
+
+Enter the celsius temperature: 23.4
+The Celsius temperature 23.4 is equivalent to 74.12
+[Finished in 0.1s]
+
+Enter the celsius temperature: 32.0
+The Celsius temperature 32.0 is equivalent to 89.60
+[Finished in 0.1s]
+
+Enter the celsius temperature: 0.0
+The Celsius temperature 0.0 is equivalent to 32.00
+[Finished in 0.1s]

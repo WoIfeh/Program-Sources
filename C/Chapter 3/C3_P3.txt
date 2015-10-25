@@ -1,0 +1,75 @@
+/* C3_P3.c
+    Author: Billy Hart    Last Modified by: Billy Hart
+    Assignment: Chapter 3 Project #3
+    Date Last Modified: October 2, 2015
+    Program Description:
+    Prints two given dates in calendar order, displaying the 
+    earilest by the latest.
+*/
+
+#include <stdio.h>
+
+//Function Declarations
+int convertToComparableDate(int month, int day, int year);
+int getEarlierDate(int date1, int date2);
+
+int main() {
+// Local Variables
+  int month1, day1, year1;
+  int month2, day2, year2;
+  int comparableDate1, comparableDate2;
+  int earilerDate;
+
+// Ask and store the two dates to compare
+  printf("Please enter the first date in format mm/dd/yyyy: \n");
+  scanf("%d/%d/%d", &month1, &day1, &year1);
+
+  printf("Please enter the second date in format mm/dd/yyyy: \n");
+  scanf("%d/%d/%d", &month2, &day2, &year2);
+
+// Compare the two dates and return the eariler date
+  comparableDate1 = convertToComparableDate(month1, day1, year1);
+  comparableDate2 = convertToComparableDate(month2, day2, year2);
+  earilerDate = getEarlierDate(comparableDate1, comparableDate2);
+
+//Display the ordered dates to the user
+  if (earilerDate == 1) {
+    printf("%d/%d/%d is earlier than %d/%d/%d\n", month1, day1, year1, 
+                                                  month2, day2, year2);
+  }
+  else {
+    printf("%d/%d/%d is earlier than %d/%d/%d\n", month2, day2, year2, 
+                                                  month1, day1, year1);
+  }
+
+// Release memory
+return (0);
+}
+
+
+int convertToComparableDate(int month, int day, int year) {
+  // The date is converted by concatinating the individual integers 
+  // into one numeric literal
+  return year *10000 + month * 100 + day;
+}
+
+int getEarlierDate(int date1, int date2) {
+  // Pick Decide which is a greater value and return the result
+  return (date1 > date2) ? 2 : 1;
+}
+
+// Compile Run Results ------------------------------------------------------------
+Please enter the first date in format mm/dd/yyyy: 8/18/1994
+Please enter the second date in format mm/dd/yyyy: 2/19/1992
+2/19/1992 is earlier than 8/18/1994
+[Finished in 0.2s]
+
+Please enter the first date in format mm/dd/yyyy: 3/14/1864 
+Please enter the second date in format mm/dd/yyyy: 9/11/2000
+3/14/1864 is earlier than 9/11/2000
+[Finished in 0.1s]
+
+Please enter the first date in format mm/dd/yyyy: 5/11/9999 
+Please enter the second date in format mm/dd/yyyy: 5/12/9999
+5/11/9999 is earlier than 5/12/9999
+[Finished in 0.1s]
