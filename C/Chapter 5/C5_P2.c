@@ -6,12 +6,6 @@
     Encrypts a message using character shifting (Caesar cipher)
 */
 
-/* Psuedo */
-// userMessage = GetMessageFromUser(); <-- Finished
-// encryptyedMessage = EncryptMessage(userMessage); <<
-// DisplayEncryptedMessage(encryptedMessage);
-
-
 // Includes
 #include <stdio.h>
 #include <stdlib.h>
