@@ -19,8 +19,8 @@
 
 // Main
 char *GetWordFromUser(int wordOrder);
-bool   DetermineIfAnagrams(char *wordOne, char *wordTwo);
-void   DisplayAnagramCheckResult(bool anagramValue);
+bool  DetermineIfAnagrams(char *wordOne, char *wordTwo);
+void  DisplayAnagramCheckResult(bool anagramValue);
 
 // Tools
 char *ConvertWordToLowerCase (char *wordToConvert);
@@ -53,7 +53,6 @@ int main() {
   DisplayAnagramCheckResult(anagramValue);
 
   // Release memory
-  system("pause");
   return (0);
 }
 
@@ -95,7 +94,6 @@ bool DetermineIfAnagrams(char *wordOne, char *wordTwo) {
   if ( strlen(wordOne) != strlen(wordTwo) ) { return false; }
   else { messageLength = strlen(wordOne); }
 
-
   // Loop through first string, and track how many times each char is encountered
   for (loopCounter = 0; loopCounter < messageLength; loopCounter++) {
 
@@ -105,7 +103,7 @@ bool DetermineIfAnagrams(char *wordOne, char *wordTwo) {
       // Increment the location in the intArray[] that contains the match
       charInstanceTracker[currentCharAsArrayIndexValue]++;
   }
-       
+
   // Repeat the loop but for the second word
   for (loopCounter = 0; loopCounter < messageLength; loopCounter++) {
       currentCharAsArrayIndexValue = wordTwo[loopCounter] - 'a';
@@ -117,17 +115,16 @@ bool DetermineIfAnagrams(char *wordOne, char *wordTwo) {
   // reinitialize to 0
   loopCounter = 0; 
 
-  // Loop through the intArray to determine if all elements are 0
+    // Loop through the intArray to determine if all elements are 0
   while (loopCounter < Array_Length(charInstanceTracker) && ZeroElement) {
 
       // If it runs into something other than a 0, break
       if (charInstanceTracker[loopCounter] != 0) { 
         ZeroElement = false; 
       }
-
         loopCounter++;
+      }
   }
-  
 
     // If all elements in the array are 0, return true, else false
     return (ZeroElement) ? true : false;
@@ -185,3 +182,20 @@ char *ConsoleRead(int maxLengthOfString) {
   // Return the pointer to the character array
   return rawMessage;
 }
+
+/* ---------------------------- Compile Run Results ---------------------------- */
+
+Enter first word: smartest
+Enter second word: mattress
+The two words are anagrams.
+[Finished in 0.1s]
+
+Enter first word: dumbest
+Enter second word: stumble
+The two words are not anagrams.
+[Finished in 0.1s]
+
+Enter first word: ScaMMer
+Enter second word: ScaNNer
+The two words are not anagrams.
+[Finished in 0.1s]
