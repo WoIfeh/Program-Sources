@@ -19,6 +19,7 @@
 // Main
 int AskUserForNumber();
 int **CreateMagicSquare(int sizeOfMagicSquare);
+void PrintMagicSquare(int **magicSquare);
 
 // Tools
 int ConsoleRead();
@@ -28,38 +29,26 @@ int ConsoleRead();
 
 int main() {
     // Local Variables
-    int dimensionOfMagicSquare = 5;
+    int dimensionOfMagicSquare;
     int **magicSquare;
 
     // Ask for the dimensions of the Magic Square
-    // dimensionOfMagicSquare = AskUserForNumber();
+    dimensionOfMagicSquare = AskUserForNumber();
 
     // Create the Magic Square
     magicSquare = CreateMagicSquare(dimensionOfMagicSquare);
 
     // Print the Magic Square so the user can see it
-    // PrintMagicSquare();
-
-
-    //Print the 2D array
-    int loopCounter1, loopCounter2;
-
-    for (loopCounter1 = 0; loopCounter1 < dimensionOfMagicSquare; loopCounter1++) {
-      for (loopCounter2 = 0; loopCounter2 < dimensionOfMagicSquare; loopCounter2++) {
-          printf("%d\t", magicSquare[loopCounter1][loopCounter2]);
-      }
-      printf("\n");
-    }
+    PrintMagicSquare(magicSquare);
 
     // Release memory
-    printf("\n");
-    system("pause"); //<--------------------------------------- Erase me afterwards
     return (0);
 }
 
 
 /* --------------------------------- Functions --------------------------------- */
 
+// Asks the user for the size of the Magic Square
 int AskUserForNumber() {
   printf("This program creates a magic square of a specified size. ");
   printf("The size must be an\n odd number between 1 and 99.\n");
@@ -67,6 +56,8 @@ int AskUserForNumber() {
   return ConsoleRead();
 }
 
+
+// Creates the magic square
 int **CreateMagicSquare(int sizeOfMagicSquare) {
   // Local Variables
   int row = 0, column = 0, oldRow, oldColumn;
@@ -120,10 +111,29 @@ int **CreateMagicSquare(int sizeOfMagicSquare) {
     // Place the next number in the sequence
     magicSquare[row][column] = nextNumberInSequence;
   }
+
+  // Return the 2D array
   return magicSquare;
 }
 
 
+// Displays the Magic Square to the user
+void PrintMagicSquare(int **magicSquare) {
+    //Local Variables
+    int loopCounter1, loopCounter2;
+    int sizeOfMagicSquare = sizeof(magicSquare) + 1;
+
+    // Loop through and print each element of the array
+    for (loopCounter1 = 0; loopCounter1 < sizeOfMagicSquare; loopCounter1++) {
+        for (loopCounter2 = 0; loopCounter2 < sizeOfMagicSquare; loopCounter2++) {
+          printf("%d ", magicSquare[loopCounter1][loopCounter2]);
+        }
+      printf("\n"); // Newline for each row
+    }
+}
+
+
+// Reads in and returns an integer from the user
 int ConsoleRead() {
   // Local Variables
   int numberFromUser;
