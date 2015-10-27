@@ -8,68 +8,44 @@
     rows, columns, and diagonals are all the same.) The user provides the value of n.
 */
 
-/*What it should look like:
-This program creates a magic square of a specified size. The size must be an
-odd number between 1 and 99.
-Enter size of magic square: 5
-
-17  24  01  08  15
-23  05  07  14  16
-04  06  13  20  22
-10  12  19  21  03
-11  18  25  02  09
-
-*/
-
 /* --------------------------------- Includes ---------------------------------- */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 /* ---------------------------- Function Prototypes ---------------------------- */
 
 // Main
 int AskUserForNumber();
+int **CreateMagicSquare(int sizeOfMagicSquare);
 
 // Tools
 int ConsoleRead();
-
-
-
-/* -------------------------------- Definitions -------------------------------- */
-
-#define Array_Length(arrayToCheck) (sizeof(arrayToCheck) / sizeof(arrayToCheck[0]))
-
 
 
 /* ----------------------------------- Main ------------------------------------ */
 
 int main() {
     // Local Variables
-    int magicSquare[99][99];
-    int dimensionOfMagicSquare;
+    int dimensionOfMagicSquare = 5;
+    int **magicSquare;
 
     // Ask for the dimensions of the Magic Square
-    dimensionOfMagicSquare = AskUserForNumber();
+    // dimensionOfMagicSquare = AskUserForNumber();
+
+    // Create the Magic Square
     magicSquare = CreateMagicSquare(dimensionOfMagicSquare);
+
+    // Print the Magic Square so the user can see it
     // PrintMagicSquare();
 
-    // Simulated Input
-    int userNum = dimensionOfMagicSquare;
-    int maxSequenceSize = userNum*userNum;
 
-
-
-
-    // Print the 2D array
-    int rows = userNum;
-    int columns = userNum;
+    //Print the 2D array
     int loopCounter1, loopCounter2;
 
-    for (loopCounter1 = 0; loopCounter1 < rows; loopCounter1++) {
-      for (loopCounter2 = 0; loopCounter2 < columns; loopCounter2++) {
+    for (loopCounter1 = 0; loopCounter1 < dimensionOfMagicSquare; loopCounter1++) {
+      for (loopCounter2 = 0; loopCounter2 < dimensionOfMagicSquare; loopCounter2++) {
           printf("%d\t", magicSquare[loopCounter1][loopCounter2]);
       }
       printf("\n");
@@ -91,23 +67,29 @@ int AskUserForNumber() {
   return ConsoleRead();
 }
 
-CreateMagicSquare(dimensionOfMagicSquare) {
+int **CreateMagicSquare(int sizeOfMagicSquare) {
   // Local Variables
+  int row = 0, column = 0, oldRow, oldColumn;
   int nextNumberInSequence = 1;
-  int column = 0;
-  int row = 0;
-  int oldRow, oldColumn;
+  int maxSequenceSize = (sizeOfMagicSquare * sizeOfMagicSquare);
 
-  // First set the column to the center of the first row
-  column = (userNum / 2);
-  // Next set that centered column value to 1
-  magicSquare[row][column] = nextNumberInSequence;
-  // Increment the number to place next
-  nextNumberInSequence++;
+  // Allocate DimensionSize of rows, each row is a pointer to an integer
+    int **magicSquare = (int **)malloc(sizeOfMagicSquare * sizeof(int *)); 
+    int loopCounter;
 
+    // Allocate DimensionSize of columns, each column is a pointer to an integer
+    for (loopCounter = 0; loopCounter < sizeOfMagicSquare; loopCounter++) {
+        magicSquare[loopCounter] = (int *)malloc(sizeOfMagicSquare * sizeof(int));
+    }
 
-  
-
+    // First set the column to the center of the first row
+    column = (sizeOfMagicSquare / 2);
+    // Next set that centered column value to 1
+    magicSquare[row][column] = nextNumberInSequence;
+    // Increment the number to place next
+    nextNumberInSequence++;
+ 
+  // Loop through the array assigning each next value in the magic square
   for ( ; nextNumberInSequence <= maxSequenceSize; nextNumberInSequence++ ) {
     // Keep a copy of previously stored numbers
     oldRow = row;
@@ -116,20 +98,20 @@ CreateMagicSquare(dimensionOfMagicSquare) {
     row--;
     // Check to see if the row needs to wrap around
     if (row < 0) {
-      // Wrap around a row by starting from the last row (userNum - 1)
-      row = (userNum - 1);
+      // Wrap around a row by starting from the last row (sizeOfMagicSquare - 1)
+      row = (sizeOfMagicSquare - 1);
     }
 
     // Move it over one column to the right
     column++;
     // Check to see if column needs wrap around
-    if (column == userNum) {
+    if (column == sizeOfMagicSquare) {
       // Wrap around to the first column by just setting it to the first column (0)
       column = 0;
     }
 
     // Check to see if a number is already occupying the slot
-    if (magicSquare[row][column] != 0) {
+    if (magicSquare[row][column] < 99) {
       // If it is, then put the number directly below the previously stored number
       row = oldRow + 1; // Last numbers row (+1 to go to the next row)
       column = oldColumn;
@@ -138,6 +120,7 @@ CreateMagicSquare(dimensionOfMagicSquare) {
     // Place the next number in the sequence
     magicSquare[row][column] = nextNumberInSequence;
   }
+  return magicSquare;
 }
 
 
