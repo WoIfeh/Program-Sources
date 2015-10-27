@@ -19,11 +19,6 @@ Enter size of magic square: 5
 10  12  19  21  03
 11  18  25  02  09
 
-
-PromtUser()
-AskUserForNumber()
-DrawMagicSquare()
-
 */
 
 /* --------------------------------- Includes ---------------------------------- */
@@ -35,8 +30,11 @@ DrawMagicSquare()
 
 /* ---------------------------- Function Prototypes ---------------------------- */
 
+// Main
+int AskUserForNumber();
+
 // Tools
-char *ConsoleRead(int maxLengthOfString);
+int ConsoleRead();
 
 
 
@@ -51,86 +49,105 @@ char *ConsoleRead(int maxLengthOfString);
 int main() {
     // Local Variables
     int magicSquare[99][99];
-    int numberToPlace = 1;
-    int column = 0;
-    int row = 0;
+    int dimensionOfMagicSquare;
+
+    // Ask for the dimensions of the Magic Square
+    dimensionOfMagicSquare = AskUserForNumber();
+    magicSquare = CreateMagicSquare(dimensionOfMagicSquare);
+    // PrintMagicSquare();
 
     // Simulated Input
-    int userNum = 3;
+    int userNum = dimensionOfMagicSquare;
+    int maxSequenceSize = userNum*userNum;
 
-    // Magic Square Creation
 
-    // First set the column to the center of the first row
-    column = (userNum / 2);
-    // Next set that centered column value to 1
-    magicSquare[row][column] = numberToPlace;
-    // Increment the number to place next
-    numberToPlace++;
 
-    while (numberToPlace < (userNum * userNum) + 1) {
-
-      // If row goes into -1
-      if (row - 1 < 0) {
-        // Reset row to last row
-        row = userNum - 1;
-      }
-      else {
-        // Otherwise move up a row
-        row--;
-      }
-
-      // If the column number moves outside the max
-      if (column + 1 > userNum) {
-        // Reset it to column 0
-        column = 0;
-      }
-      else {
-        // Otherwise, move one to the right
-        column++;
-      }
-
-      // If the spot being moved to already has a number
-      if (magicSquare[row][column] != 0)  {
-        // Then move back into the row you were in before
-        row = 0;
-      }
-
-      magicSquare[row][column] = numberToPlace;
-      numberToPlace++;
-    }
 
     // Print the 2D array
-    int rows = 3;
-    int columns = 3;
+    int rows = userNum;
+    int columns = userNum;
     int loopCounter1, loopCounter2;
 
     for (loopCounter1 = 0; loopCounter1 < rows; loopCounter1++) {
       for (loopCounter2 = 0; loopCounter2 < columns; loopCounter2++) {
-          printf("%d ", magicSquare[loopCounter1][loopCounter2]);
+          printf("%d\t", magicSquare[loopCounter1][loopCounter2]);
       }
       printf("\n");
     }
 
     // Release memory
     printf("\n");
-    // system("pause"); //<--------------------------------------- Erase me afterwards
+    system("pause"); //<--------------------------------------- Erase me afterwards
     return (0);
 }
 
 
 /* --------------------------------- Functions --------------------------------- */
 
-char *ConsoleRead(int maxLengthOfString) {
-  // Assign memory (casted) to a pointer to hold entered text
-  char *rawMessage = (char *)malloc(sizeof(char) * maxLengthOfString);
-  // Local memory on the heap to store the user message
-  char *userMessage;
-  // Read the message (up to max chars) from keyboard and store it
-  fgets(userMessage, maxLengthOfString, stdin);
-  // Take the read message and copy it into the memory allocated
-  strcpy(rawMessage, userMessage);
-  // Return the pointer to the character array
-  return rawMessage;
+int AskUserForNumber() {
+  printf("This program creates a magic square of a specified size. ");
+  printf("The size must be an\n odd number between 1 and 99.\n");
+  printf("Enter size of magic square: ");
+  return ConsoleRead();
+}
+
+CreateMagicSquare(dimensionOfMagicSquare) {
+  // Local Variables
+  int nextNumberInSequence = 1;
+  int column = 0;
+  int row = 0;
+  int oldRow, oldColumn;
+
+  // First set the column to the center of the first row
+  column = (userNum / 2);
+  // Next set that centered column value to 1
+  magicSquare[row][column] = nextNumberInSequence;
+  // Increment the number to place next
+  nextNumberInSequence++;
+
+
+  
+
+  for ( ; nextNumberInSequence <= maxSequenceSize; nextNumberInSequence++ ) {
+    // Keep a copy of previously stored numbers
+    oldRow = row;
+    oldColumn = column;
+    //Move up one row (Decrement to move up)
+    row--;
+    // Check to see if the row needs to wrap around
+    if (row < 0) {
+      // Wrap around a row by starting from the last row (userNum - 1)
+      row = (userNum - 1);
+    }
+
+    // Move it over one column to the right
+    column++;
+    // Check to see if column needs wrap around
+    if (column == userNum) {
+      // Wrap around to the first column by just setting it to the first column (0)
+      column = 0;
+    }
+
+    // Check to see if a number is already occupying the slot
+    if (magicSquare[row][column] != 0) {
+      // If it is, then put the number directly below the previously stored number
+      row = oldRow + 1; // Last numbers row (+1 to go to the next row)
+      column = oldColumn;
+    }
+
+    // Place the next number in the sequence
+    magicSquare[row][column] = nextNumberInSequence;
+  }
+}
+
+
+int ConsoleRead() {
+  // Local Variables
+  int numberFromUser;
+  // Scarily using scanf() for convenience, ignoring buffer overflow
+  scanf("%d", &numberFromUser);
+  // Return the entered number
+  return numberFromUser;
 }
 
 /* ---------------------------- Compile Run Results ---------------------------- */
