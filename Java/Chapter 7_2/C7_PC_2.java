@@ -42,12 +42,13 @@ public class C7_PC_2
       // Simulated Input
 
 
-      // Map has 24 rows and 47 columns
       final int MAP_ROWS = 24;
       final int MAP_COLUMNS = 47;
+      final int ROWS_WITHOUT_MARKERS = 20;
+      final int COLUMNS_WITHOUT_MARKERS = 42;
       char mapOfLirth[][] = new char[MAP_ROWS][MAP_COLUMNS];
-      int loopCounterRow, loopCounterColumn, loopCounter;
-      int maxNumOfNums = 9, minNumOfNums = 1;
+      int loopCounter, loopCounterRow, loopCounterColumn;
+      int minNumOfNums = 1, maxNumOfNums = 9, markerLocation = 4;
       int row, column;
 
       // Initalize all of the map with empty spaces
@@ -58,55 +59,55 @@ public class C7_PC_2
      }
 
       // Place the Column numbers
-      for (loopCounter = 2; loopCounter <= (MAP_COLUMNS / 2.35); loopCounter++) {
-          if (loopCounter % 2 == 0) {
+      for (loopCounter = 2, markerLocation = 2; loopCounter <= ROWS_WITHOUT_MARKERS; loopCounter++) {
+          if (counterIsAtNextMarker(loopCounter, markerLocation)) {
               if (loopCounter == 2) {
                 mapOfLirth[loopCounter][loopCounter - 1] = '1';
-                mapOfLirth[loopCounter][loopCounter]      = '0';
+                mapOfLirth[loopCounter][loopCounter]     = '0';
               }
               else {
-                mapOfLirth[loopCounter][2]   = (char)(maxNumOfNums + 48);
+                mapOfLirth[loopCounter][2] = Integer.toString(maxNumOfNums).charAt(0);
                 maxNumOfNums--;
               }
           }
       }
 
       // Place the Row numbers
-      for (loopCounter = 6; loopCounter <= (MAP_ROWS * 1.75); loopCounter++) {
-          if ((loopCounter + 2)% 4 == 0) {
-              mapOfLirth[22][loopCounter] = (char)(minNumOfNums + 48);
+      for (loopCounter = 6, markerLocation = 4; loopCounter <= COLUMNS_WITHOUT_MARKERS; loopCounter++) { 
+          if ( counterIsAtNextMarker(loopCounter + 2, markerLocation)) {
+              mapOfLirth[22][loopCounter] = Integer.toString(minNumOfNums).charAt(0);
               minNumOfNums++;
-              if (loopCounter == 42) {
+              if (loopCounter == COLUMNS_WITHOUT_MARKERS) { 
                 mapOfLirth[22][loopCounter] = '1';
-                mapOfLirth[22][loopCounter + 1] = '0';
+                mapOfLirth[22][loopCounter + 1] = '0'; 
               }
           }
       }
 
       // Place the row markers ( '---' )
-      for (loopCounterRow = 1; loopCounterRow < (MAP_ROWS - 1); loopCounterRow += 2) {
+      for (loopCounterRow = 1, markerLocation = 4; loopCounterRow < (MAP_ROWS - 1); loopCounterRow += 2) {
         for (loopCounterColumn = 4; loopCounterColumn < (MAP_COLUMNS - 3); loopCounterColumn++) {
-          if (loopCounterColumn % 4 != 0) {
-            mapOfLirth[loopCounterRow][loopCounterColumn] = '-';
+          if ( counterIsAtNextMarker(loopCounterColumn, markerLocation) ) {
+            mapOfLirth[loopCounterRow][loopCounterColumn] = ' ';
           }
           else {
-            mapOfLirth[loopCounterRow][loopCounterColumn] = ' ';
+            mapOfLirth[loopCounterRow][loopCounterColumn] = '-';
           }
         }
       }
 
       // Place the column markers ( '|' )
-      for (loopCounterRow = 2; loopCounterRow < (MAP_ROWS - 2); loopCounterRow += 2) {
+      for (loopCounterRow = 2, markerLocation = 4; loopCounterRow < (MAP_ROWS - 2); loopCounterRow += 2) {
         for (loopCounterColumn = 4; loopCounterColumn < (MAP_COLUMNS - 2); loopCounterColumn++) {
-          if (loopCounterColumn % 4 != 0) {
-            mapOfLirth[loopCounterRow][loopCounterColumn] = ' ';
+          if ( counterIsAtNextMarker(loopCounterColumn, markerLocation) ) {
+            mapOfLirth[loopCounterRow][loopCounterColumn] = '|';
           }
           else {
-            mapOfLirth[loopCounterRow][loopCounterColumn] = '|';
+            mapOfLirth[loopCounterRow][loopCounterColumn] = ' ';
           }
         }
       }
-
+      
       // Place in the directional words <--- I failed, I couldn't figure out how to add these into the loop so I cheated...'
 
       // North
@@ -142,34 +143,14 @@ public class C7_PC_2
         }
         System.out.println("");
      }
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Exit
-        System.exit(0);
+    public static boolean counterIsAtNextMarker(int counter, int markerLocation) {
+      return counter % markerLocation == 0;
     }
+
 }
+     
 
 // ## Results #####################################################################
 
