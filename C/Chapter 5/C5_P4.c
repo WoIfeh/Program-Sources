@@ -42,6 +42,7 @@ int main() {
     PrintMagicSquare(magicSquare);
 
     // Release memory
+    system("pause");
     return (0);
 }
 
@@ -121,7 +122,7 @@ int **CreateMagicSquare(int sizeOfMagicSquare) {
 void PrintMagicSquare(int **magicSquare) {
     //Local Variables
     int loopCounter1, loopCounter2;
-    int sizeOfMagicSquare = sizeof(magicSquare) + 1;
+    int sizeOfMagicSquare = 3;
 
     // Loop through and print each element of the array
     for (loopCounter1 = 0; loopCounter1 < sizeOfMagicSquare; loopCounter1++) {

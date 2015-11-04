@@ -1,0 +1,814 @@
+/*
+ * ################################################################################
+ * Name: Billy Hart
+ * Chapter: 7 (Part 2)
+ * Assignment: Programming Challenge Option #2
+ * Date: 10/24/15
+ * Description: Text-only version of game Hurkle. 
+ *              Hurkle, a happy little beast, lives on the planet Lirht which is a 
+ *              flat world divided into 10 rows and columns. The Hurkle likes to 
+ *              hide randomly in one of those 100 plots on Lirht. It is the 
+ *              players job to find the Hurkle. The player will enter a horizontal 
+ *              (x) coordinate, followed by a vertical (y) coordinate. The Hurkle 
+ *              will then give a clue as to where it is hiding.
+ * ################################################################################
+*/
+
+/*_____- * - Grade - * -_____
+ |                           |
+ |                           |
+ |                           |
+ |                           |
+ |                           |
+ |___________________________|
+*/
+
+/*
+ * ## Pseudo ######################################################################
+ * Create the map of Lirht
+ * Hide the Hurkle in the map
+ * Loop -->
+ * Show the map to the player
+ * Keep track of guesses and clues, and display them
+ * Ask for a guess
+ * If the user is correct <-- EndLoop
+ * Else give the player a clue
+ * EndLoop <--
+ * Tell the player they've won!
+ * ################################################################################
+*/
+
+// Includes
+import java.util.Scanner;
+import java.util.Random;
+import java.util.ArrayList;
+
+public class C7_PC_2
+{
+    public static void main(String[] args)
+    {
+      // Local Variables
+      ArrayList<int[]> guessList = new ArrayList<int[]>();
+      ArrayList<String> clueList = new ArrayList<String>();
+      int userGuessCoords[] = new int[2];
+      int hurkleLocation[] = new int[2];
+      boolean foundHurkle = false;
+
+      // Settings
+      boolean visible = false; // Dev-mode for hurkle being visible to user
+      char userMark = 'X';
+
+      // Create the map
+      char mapOfLirht[][] = CreateLirhtMap();
+
+      // Place Hurkle in the map
+      hurkleLocation = PlaceHurkleOnMap(mapOfLirht, visible);
+
+      do 
+      {
+        // Display the map
+        DisplayMap(mapOfLirht);
+
+        // Display the guess and clue table
+        DisplayGuessAndClueTable(guessList, clueList);
+
+        // Ask the user for their guess
+        userGuessCoords = GetGuessCoordsFromUser(guessList);
+
+        // Mark the users guess
+        MarkLocationOnMap(mapOfLirht, userMark, userGuessCoords[0], 
+                                                userGuessCoords[1]);
+
+        // Fill in the clue based on the users guess
+        foundHurkle = GenerateClue(userGuessCoords, hurkleLocation, clueList);
+      } while (!foundHurkle);
+
+      // Hurkle has been found, tell the user
+      System.out.print("You found Hurkle!");
+    }
+
+
+
+
+    // Functions ------------------------------------------------------------------
+
+    // Creates the map of Lirht
+    public static char[][] CreateLirhtMap() 
+    {
+
+      // Local Variables
+      final int MAP_ROWS = 24;
+      final int MAP_COLUMNS = 47;
+      final int ROWS_WITHOUT_MARKERS = 20;
+      final int COLUMNS_WITHOUT_MARKERS = 42;
+
+      char mapOfLirht[][] = new char[MAP_ROWS][MAP_COLUMNS];
+
+      char North[] = {'N', 'O', 'R', 'T', 'H'};
+      char South[] = {'S', 'O', 'U', 'T', 'H'};
+      char East[]  = {'E', 'A', 'S', 'T'};
+      char West[]  = {'W', 'E', 'S', 'T'};
+
+      int loopCounter, loopCounterRow, loopCounterColumn;
+      int minNumOfNums = 1, maxNumOfNums = 9, markerLocation = 4;
+      int startOfColumn = 0, endOfColumn = 46;
+      int startOfRow = 9, endOfRow = 22;
+      int row, column;
+
+      // Initalize all of the map with empty spaces
+      for (row = 0; row < MAP_ROWS; row++) 
+      {
+         for (column = 0; column < MAP_COLUMNS; column++) 
+         {
+            mapOfLirht[row][column] = ' ';
+         }
+      }
+
+      // Place the Column numbers
+      for (loopCounter = 2, markerLocation = 2; 
+                                loopCounter <= ROWS_WITHOUT_MARKERS; loopCounter++) 
+      {
+         if (CounterIsAtNextMarker(loopCounter, markerLocation)) 
+         {
+            if (loopCounter == 2) 
+            {
+               mapOfLirht[loopCounter][loopCounter - 1] = '1';
+               mapOfLirht[loopCounter][loopCounter]     = '0';
+            }
+            else 
+            {
+               mapOfLirht[loopCounter][2] = 
+                                          Integer.toString(maxNumOfNums).charAt(0);
+               maxNumOfNums--;
+            }
+         }
+      }
+
+      // Place the Row numbers
+      for (loopCounter = 6, markerLocation = 4; 
+                            loopCounter <= COLUMNS_WITHOUT_MARKERS; loopCounter++) 
+      { 
+         if ( CounterIsAtNextMarker(loopCounter + 2, markerLocation)) 
+         {
+            mapOfLirht[22][loopCounter] = Integer.toString(minNumOfNums).charAt(0);
+            minNumOfNums++;
+
+            if (loopCounter == COLUMNS_WITHOUT_MARKERS) 
+            { 
+               mapOfLirht[22][loopCounter] = '1';
+               mapOfLirht[22][loopCounter + 1] = '0'; 
+            }
+         }
+      }
+
+      // Place the row markers ( '---' )
+      for (loopCounterRow = 1, markerLocation = 4; 
+                              loopCounterRow < (MAP_ROWS - 1); loopCounterRow += 2) 
+      {
+         for (loopCounterColumn = 4; loopCounterColumn < (MAP_COLUMNS - 3); 
+                                                               loopCounterColumn++) 
+         {
+            if ( CounterIsAtNextMarker(loopCounterColumn, markerLocation) ) 
+            {
+               mapOfLirht[loopCounterRow][loopCounterColumn] = ' ';
+            }
+            else 
+            {
+               mapOfLirht[loopCounterRow][loopCounterColumn] = '-';
+            }
+         }
+      }
+
+      // Place the column markers ( '|' )
+      for (loopCounterRow = 2, markerLocation = 4; loopCounterRow < (MAP_ROWS - 2); 
+                                                              loopCounterRow += 2) 
+      {
+         for (loopCounterColumn = 4; loopCounterColumn < (MAP_COLUMNS - 2); 
+                                                              loopCounterColumn++) 
+         {
+            if ( CounterIsAtNextMarker(loopCounterColumn, markerLocation) ) 
+            {
+               mapOfLirht[loopCounterRow][loopCounterColumn] = '|';
+            }
+            else 
+            {
+               mapOfLirht[loopCounterRow][loopCounterColumn] = ' ';
+            }
+         }
+      }
+      
+      // Place in the directional words
+      for (loopCounter = 0; loopCounter < North.length; loopCounter++) 
+      {
+         mapOfLirht[startOfColumn][loopCounter + endOfRow] = North[loopCounter];
+         mapOfLirht[endOfRow + 1][loopCounter + endOfRow] = South[loopCounter];
+      }
+      
+      for (loopCounter = 0; loopCounter < East.length; loopCounter++) 
+      {
+         mapOfLirht[startOfRow + loopCounter][endOfColumn] = East[loopCounter];
+         mapOfLirht[startOfRow + loopCounter][startOfColumn] = West[loopCounter];
+      }
+      
+      // Return the map (array)
+      return mapOfLirht;
+    }
+
+    
+    // Places Hurkle on the map
+    public static int[] PlaceHurkleOnMap(char map[][], boolean visibilityState)
+    {
+      
+      // Local Variables
+      int rowMin = 2, rowMax = 20;
+      int columnMin = 8, columnMax = 42;
+      Random locationGenerator = new Random();
+      int  hurkleLocation[] = new int[2];
+      char hurkleMark = 'O';
+
+      // Generate Hurkles Location (Row/Column)
+      int rowLocation = (locationGenerator.nextInt(rowMax - rowMin + 1) + 
+                                                                       rowMin) &-2;
+      int columnLocation = ((locationGenerator.nextInt(((columnMax + 2) - 
+                                             columnMin) + 1) + columnMin) & -4) -2;
+
+      // If dev-mode set to true, show hurkles location
+      if (visibilityState == true) 
+      {
+         MarkLocationOnMap(map, hurkleMark, rowLocation, columnLocation);
+      }
+
+      // Store the locations into an array
+      hurkleLocation[0] = rowLocation;
+      hurkleLocation[1] = columnLocation;
+
+      // Return Hurkle location as a tuple
+      return hurkleLocation;
+    }
+
+
+    // Gets the guess coordinates from the user
+    public static int[] GetGuessCoordsFromUser(ArrayList<int[]> guessList) {
+     
+      // Local Variables
+      String guessCoords;
+      String guesses[];
+      int userGuess[] = new int[2];
+      int originalGuess[] = new int[2];
+
+      // Enable User Input
+      Scanner userInput = new Scanner(System.in);
+
+      // Read entire coord guess (5, 2)
+      guessCoords = userInput.nextLine();
+
+      // Separate guesses by a comma
+      guesses = guessCoords.split(",");
+
+      // Remove the whitespace after the comma
+      guesses[1] = guesses[1].replaceAll("(^ )|( $)", "");
+
+      // Cast guesses from string to int
+      userGuess[0] = Integer.parseInt(guesses[0]);
+      userGuess[1] = Integer.parseInt(guesses[1]);
+
+      // Store original copy separately so that the value doesn't update to array
+      // coords, because list passes pointer
+      originalGuess[0] = userGuess[0];
+      originalGuess[1] = userGuess[1];
+
+      // Store the users score
+      guessList.add(originalGuess);
+
+      // Convert guess coords to array coords
+      userGuess[0] = 20 - 2 * (userGuess[0] - 1);
+      userGuess[1] = (userGuess[1] * 4) + 2;
+
+      // return the guesses as a tuple
+      return userGuess;
+    }
+
+
+    // Displays the user guess and clue table
+    public static void DisplayGuessAndClueTable(ArrayList<int[]> guessList, 
+                                                ArrayList<String> clueList)
+    {
+
+      // Local Variables
+      int loopCounter;
+
+      // Adds a couple of spaces beneath the map to give it a cleaner view
+      for (loopCounter = 0; loopCounter < 4; loopCounter++) 
+      {
+         System.out.println();
+      }
+
+      // Display table header
+      System.out.println("Guess\t\t\tClue");
+
+      // Print through the rest of guess and clue table history 
+      if (!guessList.isEmpty()) {
+        for (loopCounter = 0; loopCounter < guessList.size(); loopCounter++) 
+        {
+           System.out.print(guessList.get(loopCounter)[0] + ", " + 
+                                   guessList.get(loopCounter)[1] + "\t\t\t");
+           System.out.println(clueList.get(loopCounter));
+        }
+      }
+
+      return;
+    }
+
+
+    // Generates a clue
+    public static boolean GenerateClue(int guessCoords[], int hurkleLocation[], 
+                                                        ArrayList<String> clueList) 
+    {
+       
+      // Local Variables
+      String clue[] = new String[2];
+
+      // Determine if you've found hurkle
+      if (Arrays.equals(guessCoords, hurkleLocation)) 
+      {
+        // Exit the function
+        return true;
+      }
+      else 
+      {
+        // Provide clue -> direction hurkle is away from the users guess
+        if (guessCoords[0] - hurkleLocation[0] > 0) 
+        {
+          clue[0] = "North ";
+        }
+        else if (guessCoords[0] - hurkleLocation[0] == 0) 
+        {
+          clue[0] = "";
+        }
+        else 
+        {
+          clue[0] = "South ";
+        }
+
+        if (guessCoords[1] - hurkleLocation[1] > 0) 
+        {
+          clue[1] = "West";
+        }
+        else if (guessCoords[1] - hurkleLocation[1] == 0) 
+        {
+          clue[1] = "";
+        }
+        else 
+        {
+          clue[1] = "East";
+        }
+
+        // Log the clue
+        clueList.add(clue[0] + clue[1]);
+
+        // Return that he wasn't found
+        return false;
+      }
+    }
+
+
+    // Marks a location on the map
+    public static char[][] MarkLocationOnMap(char map[][], char markType, 
+                                               int rowLocation, int columnLocation) 
+    {
+        // Update the map with a mark on it based on given location
+        map[rowLocation][columnLocation] = markType;
+
+	// Send back the map
+        return map;
+    }
+
+
+    // Determines if the counter is at the next marker location
+    public static boolean CounterIsAtNextMarker(int counter, int markerLocation) 
+    {
+      // Return if the location is divisible evenly
+      return counter % markerLocation == 0;
+    }
+
+
+    // Displays the map of Lirht
+    public static void DisplayMap(char map[][]) 
+    {
+    
+      // Local Variables
+      int row, column, loopCounter;
+      final int MAP_ROWS = 24;
+      final int MAP_COLUMNS = 47;
+
+      for (row = 0; row < MAP_ROWS; row++) 
+      {
+         for (column = 0; column < MAP_COLUMNS; column++) 
+         {
+           System.out.print(map[row][column]);
+         }
+
+         System.out.println("");
+      }
+
+      return;
+    }
+}     
+
+// ## Results #####################################################################
+
+Game 1: <==
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+6, 4
+
+
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   | X |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+6, 4                    South East
+3, 7
+
+
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   | X |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   | X |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+
+
+Guess                   Clue
+6, 4                    South East
+3, 7                    North
+4, 7                    You found Hurkle!
+
+
+
+Game 2: <==
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+5, 5
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   | X |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+5, 5                    South East
+3, 8
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   | X |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   | X |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+5, 5                    South East
+3, 8                    South West
+2, 6                    You found Hurkle!
+
+
+
+Game 3: <==
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   | X |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5                    North East
+8, 8
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   | X |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   |   |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   | X |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5                    North East
+8, 8                    South West
+6, 6
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   | X |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   | X |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   |   |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   | X |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5                    North East
+8, 8                    South West
+6, 6                    South
+5, 6
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   | X |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   | X |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   | X |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   | X |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5                    North East
+8, 8                    South West
+6, 6                    South
+5, 6                    South
+4, 6
+
+
+                      NORTH
+     --- --- --- --- --- --- --- --- --- ---
+ 10 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  9 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  8 |   |   |   |   |   |   |   | X |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  7 |   |   |   |   |   |   |   |   |   |   |
+W    --- --- --- --- --- --- --- --- --- ---  E
+E 6 |   |   |   |   |   | X |   |   |   |   | A
+S    --- --- --- --- --- --- --- --- --- ---  S
+T 5 |   |   |   |   |   | X |   |   |   |   | T
+     --- --- --- --- --- --- --- --- --- ---
+  4 |   |   |   |   |   | X |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  3 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  2 |   |   |   |   | X |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+  1 |   |   |   |   |   |   |   |   |   |   |
+     --- --- --- --- --- --- --- --- --- ---
+      1   2   3   4   5   6   7   8   9   10
+                      SOUTH
+
+
+Guess                   Clue
+2, 5                    North East
+8, 8                    South West
+6, 6                    South
+5, 6                    South
+4, 6                    South
+3, 6                    You found Hurkle!
