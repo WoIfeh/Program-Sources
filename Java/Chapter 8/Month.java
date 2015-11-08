@@ -22,6 +22,8 @@
  * + getMonthName()                              : String                      |                             
  * + toString()                                  : String                      |
  * + equals(Month)                               : boolean                     |
+ * + greaterThan(Month)                          : boolean                     |
+ * + lessThan(Month)                             : boolean                     |
  * #############################################################################
 */
 
@@ -105,8 +107,17 @@ public class Month
 
     public boolean equals(Month monthObject)
     {
-      // Determine if the two objects hold the same data
       return (this.monthNumber == monthObject.getMonthNumber());
+    }
+
+    public boolean greaterThan(Month monthObject)
+    {
+      return (this.monthNumber < monthObject.getMonthNumber());
+    }
+
+    public boolean lessThan(Month monthObject)
+    {
+      return (this.monthNumber > monthObject.getMonthNumber());
     }
 
     // Helper Functions
