@@ -88,6 +88,7 @@ Func _HideDriveLetter($driveLetter)
 
     Local Const $registryFilePath = @DesktopDir & "\HideDrive.reg"
     Local Const $registryHeader = "Windows Registry Editor Version 5.00"
+    Local Const $registryPath = "[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]"
     Local $driveLetterInHex = Hex(StringFormat("%08d", $driveLetter))
 
     If Not FileWrite($registryFilePath, $registryHeader & @CRLF) Then
@@ -105,7 +106,7 @@ Func _HideDriveLetter($driveLetter)
     ConsoleWrite("Opened Registry File For Editing" & @CRLF)
 
     FileWrite($registryFile, @CRLF)
-    FileWrite($registryFile, "[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]")
+    FileWrite($registryFile, $registryPath)
     FileWrite($registryFile, @CRLF)
     FileWrite($registryFile, '"NoDrives"=dword:' & $driveLetterInHex)
     FileWrite($registryFile, @CRLF)
