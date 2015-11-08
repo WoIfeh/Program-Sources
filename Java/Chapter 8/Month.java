@@ -47,19 +47,70 @@ public class Month
       {
         this.monthNumber = monthAsDigit;
       }
-      
+    }
+
     public Month(String monthAsString)
     {
+
+      /* 
+         Start Rant ---
+         HashMap mapOfMonths = new HashMap(NUM_OF_MONTHS);
+         Would have been 10x's better
+         End Rant ---
+      */
+
       if (monthAsString == null)
       {
         this.monthNumber = 1;
       }
       else
       {
-        // Hashmap here
-      }
+       switch (monthAsString.toLowerCase())
+       {
+        case "january": 
+                this.monthNumber = 1;
+                break;
+        case "february": 
+                this.monthNumber = 2;
+                break;
+        case "march": 
+                this.monthNumber = 3;
+                break;
+        case "april": 
+                this.monthNumber = 4;
+                break;
+        case "may": 
+                this.monthNumber = 5;
+                break;
+        case "june": 
+                this.monthNumber = 6;
+                break;
+        case "july": 
+                this.monthNumber = 7;
+                break;
+        case "august": 
+                this.monthNumber = 8;
+                break;                                                                                                                                                                      
+        case "september": 
+                this.monthNumber = 9;
+                break;
+        case "october": 
+                this.monthNumber = 10;
+                break;
+        case "november": 
+                this.monthNumber = 11;
+                break;
+        case "december": 
+                this.monthNumber = 12;
+                break;
+        default: 
+                this.monthNumber = -1;
+                break;
+       }
+     }
     }
 
+    
 }
 
 // ## Results #####################################################################
