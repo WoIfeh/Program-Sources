@@ -105,14 +105,8 @@ public class Month
 
     public boolean equals(Month monthObject)
     {
-      // Local Variables
-      boolean sameData = false;
-
       // Determine if the two objects hold the same data
-      
-
-      // Return if the data is the same
-      return sameData;
+      return (this.monthNumber == monthObject.getMonthNumber());
     }
 
     // Helper Functions
