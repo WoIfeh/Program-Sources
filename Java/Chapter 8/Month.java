@@ -8,28 +8,32 @@
  * ################################################################################
 */
 
-/*_____- * - Grade - * -_____
- |                           |
- |                           |
- |                           |
- |                           |
- |                           |
- |___________________________|
-*/
-
 /*
- * ## Pseudo ######################################################################
- *
- * ################################################################################
+ * ## UML Table ################################################################
+ * Month                                                                       |
+ * ----------------------------------------------------------------------------|
+ * - monthNumber : int                                                         |
+ * ----------------------------------------------------------------------------|
+ * + Month()                                                                   |
+ * + Month(String monthAsString)                                               |
+ * + Month(int monthAsDigit)                                                   |
+ * + setMonthNumber(int newAssignedMonthNumber)  : void                        |
+ * + getMonthNumber()                            : int                         |
+ * + getMonthName()                              : String                      |                             
+ * + toString()                                  : String                      |
+ * + equals(Month)                               : boolean                     |
+ * #############################################################################
 */
 
 // Includes
-// import java.util.Scanner;
+import java.util.Arrays;
 
 public class Month
 {
  // Instance variables
     private int monthNumber;
+    private final static String[] monthList = {"january", "february", "march", "april", "may", "june", "july", 
+                                                             "august", "september", "october", "november", "december"};
 
     // Constructors
     public Month()
@@ -39,88 +43,46 @@ public class Month
 
     public Month(int monthAsDigit)
     {
-      if (monthAsDigit < 1 || monthAsDigit > 12) 
+      if (isValidMonth(monthAsDigit))
       {
-        this.monthNumber = 1;
+        this.monthNumber = monthAsDigit;
       }
       else 
       {
-        this.monthNumber = monthAsDigit;
+        this.monthNumber = 1;
       }
     }
 
     public Month(String monthAsString)
     {
+       // Local Variables
+        int monthDigit = 1;
+        int loopCounter;
 
-      /* 
-         Start Rant ---
-         HashMap mapOfMonths = new HashMap(NUM_OF_MONTHS);
-         Would have been 10x's better
-         End Rant ---
-      */
+        // Loop through the month array until the strings match
+        for (loopCounter = 0; loopCounter < monthList.length; loopCounter++) 
+        {
+            if (monthAsString.equals(monthList[loopCounter])) 
+            {
+                monthDigit = loopCounter + 1;
+            }
+        }
 
-      if (monthAsString == null)
-      {
-        this.monthNumber = 1;
-      }
-      else
-      {
-       switch (monthAsString.toLowerCase())
-       {
-        case "january": 
-                this.monthNumber = 1;
-                break;
-        case "february": 
-                this.monthNumber = 2;
-                break;
-        case "march": 
-                this.monthNumber = 3;
-                break;
-        case "april": 
-                this.monthNumber = 4;
-                break;
-        case "may": 
-                this.monthNumber = 5;
-                break;
-        case "june": 
-                this.monthNumber = 6;
-                break;
-        case "july": 
-                this.monthNumber = 7;
-                break;
-        case "august": 
-                this.monthNumber = 8;
-                break;                                                                                                                                                                      
-        case "september": 
-                this.monthNumber = 9;
-                break;
-        case "october": 
-                this.monthNumber = 10;
-                break;
-        case "november": 
-                this.monthNumber = 11;
-                break;
-        case "december": 
-                this.monthNumber = 12;
-                break;
-        default: 
-                // I set the default to 1 because all the other error handling options given set it to month 1
-                this.monthNumber = 1;
-                break;
-       }
-     }
+        // Store the index value. If month is invalid, sets as 1
+        this.monthNumber = monthDigit;
     }
 
+
     // Getters / Setters
-    public void setMonthNumber(int monthAsDigit)
+    public void setMonthNumber(int monthAsDigit) 
     {
-      if (monthAsDigit < 1 || monthAsDigit > 12) 
+      if (isValidMonth(monthAsDigit))
       {
-        this.monthNumber = 1;
+        this.monthNumber = monthAsDigit;
       }
       else 
       {
-        this.monthNumber = monthAsDigit;
+        this.monthNumber = 1;
       }
     }
 
@@ -129,8 +91,51 @@ public class Month
       return this.monthNumber;
     }
 
+    public String getMonthName()
+    {
+      return monthList[this.monthNumber - 1];
+    }
+
+
+    // State checks and comparisons
+    public String toString()
+    {
+      return this.getMonthName();
+    }
+
+    public boolean equals(Month monthObject)
+    {
+      // Local Variables
+      boolean sameData = false;
+
+      // Determine if the two objects hold the same data
+      
+
+      // Return if the data is the same
+      return sameData;
+    }
+
+    // Helper Functions
+    public boolean isValidMonth(int monthAsDigit) 
+    {
+        // Local Variables
+        boolean validMonth = true;
+        final int monthRangeMinimum = 1;
+        final int monthRangeMaximum = monthList.length;
+        
+        // Check to see if the month falls within range
+        if (monthAsDigit < monthRangeMinimum || monthAsDigit > monthRangeMaximum) 
+        {
+            validMonth = false;
+        }
+        
+        // Return true if it's within range, false otherwise
+        return validMonth;
+    }
+
 }
 
 // ## Results #####################################################################
 
     
+
