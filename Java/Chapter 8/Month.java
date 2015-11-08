@@ -104,13 +104,31 @@ public class Month
                 this.monthNumber = 12;
                 break;
         default: 
-                this.monthNumber = -1;
+                // I set the default to 1 because all the other error handling options given set it to month 1
+                this.monthNumber = 1;
                 break;
        }
      }
     }
 
-    
+    // Getters / Setters
+    public void setMonthNumber(int monthAsDigit)
+    {
+      if (monthAsDigit < 1 || monthAsDigit > 12) 
+      {
+        this.monthNumber = 1;
+      }
+      else 
+      {
+        this.monthNumber = monthAsDigit;
+      }
+    }
+
+    public int getMonthNumber()
+    {
+      return this.monthNumber;
+    }
+
 }
 
 // ## Results #####################################################################
