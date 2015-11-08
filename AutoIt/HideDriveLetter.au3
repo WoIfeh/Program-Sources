@@ -51,7 +51,7 @@
 #EndRegion ---------------------------------------------------------------------------------
 
 
-#Region ## MAIN ## ---------------------------------------------------------------------
+#Region ## MAIN ## -------------------------------------------------------------------------
 
 $driveLetter = _DriveLetterToHide()
 _HideDriveLetter($driveLetter)
@@ -59,7 +59,7 @@ _HideDriveLetter($driveLetter)
 #EndRegion ---------------------------------------------------------------------------------
 
 
-#Region ## FUNCTIONS  ## ---------------------------------------------------------------------
+#Region ## FUNCTIONS  ## -------------------------------------------------------------------
 
 Func _DriveLetterToHide()
     $driveLetter = InputBox("Hide A Drive", "Drive letter to hide:", "D")
@@ -101,7 +101,7 @@ Func _HideDriveLetter($driveLetter)
     Local $registryFile = FileOpen($registryFilePath, $APPEND_TO_END_OF_FILE)
     If $registryFile = -1 Then
         MsgBox($MB_SYSTEMMODAL, "", "An error occurred when opening the registry file for editing.")
-        Return False
+        Exit
     EndIf
     ConsoleWrite("Opened Registry File For Editing" & @CRLF)
 
