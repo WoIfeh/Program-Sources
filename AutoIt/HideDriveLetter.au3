@@ -62,7 +62,8 @@ _HideDriveLetter($driveLetter)
 #Region ## FUNCTIONS  ## -------------------------------------------------------------------
 
 Func _DriveLetterToHide()
-    $driveLetter = InputBox("Hide A Drive", "Drive letter to hide:", "D")
+    Local $defaultDriveLetter = "D"
+    $driveLetter = InputBox("Hide A Drive", "Drive letter to hide:", $defaultDriveLetter)
     ConsoleWrite("Drive Letter Selected: " & $driveLetter & @CRLF)
 
     Local $driveLetterArray[26]
