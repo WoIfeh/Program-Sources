@@ -31,7 +31,7 @@
     Opt("WinTitleMatchMode", 2)
     #RequireAdmin
 
-; // Compiling option ----------------------------------------------------------------------
+; // Compiling options ----------------------------------------------------------------------
         #pragma compile(Out, HideDriveLetter.exe)
         #pragma compile(x64, True)
         #pragma compile(FileDescription, Hide Drive Letters From Windows Explorer)
