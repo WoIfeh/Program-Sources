@@ -25,40 +25,19 @@
 
 #Region ## SETTINGS ## ---------------------------------------------------------------------
 
-    ; For non-GUI's, allows the user to close the app by pressing ESC
     HotKeySet("{ESC}", "_Terminate")
-
-    ; Forces the coder to declare all variables before they can be used
-        ; 0 = Must declare, 1 = You don't have too
     Opt("MustDeclareVars", 0)
-
-    ; Option to hide or show the autoit icon in the taskbar
-        ; 0 = Show, 1 = Hide, Or use #NoTrayIcon
-    ;Opt("TrayIconHide", 1)
     #NoTrayIcon
-
-    ; Option that allows WinActivate partial searches
     Opt("WinTitleMatchMode", 2)
-
-    ; Requires that the script be ran as an administrator
     #RequireAdmin
 
 ; // Compiling option ----------------------------------------------------------------------
-    ; Require that the script be compiled to run it
-    ;   _CompiledCheck()
-    ; What the program should be called when it's compiled
         #pragma compile(Out, HideDriveLetter.exe)
-    ; Compiles on a 64-bit OS
         #pragma compile(x64, True)
-    ; The description of the program
         #pragma compile(FileDescription, Hide Drive Letters From Windows Explorer)
-    ; Name of the program
         #pragma compile(ProductName, HideDriveLetter)
-    ; Product Version
         #pragma compile(ProductVersion, 0.1)
-    ; File Version
         #pragma compile(FileVersion, 0.0.0.1)
-    ; Company name
         #pragma compile(CompanyName, '+W+')
 
 #EndRegion ---------------------------------------------------------------------------------
