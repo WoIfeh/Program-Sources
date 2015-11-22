@@ -1,7 +1,7 @@
 /*
  * ################################################################################
  * Name: Billy Hart
- * Chapter: 5
+ * Chapter: 8
  * Assignment: Programming Challenge #5
  * Date: 10/06/15
  * Description: Demonstrates the Month class by creating and manipulating month 
