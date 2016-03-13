@@ -44,12 +44,13 @@ public class Chapter2
 		// Local Variables
 		float charge, tax, tip, total;
 		final float taxPercentage = 0.0675F, tipPercentage = 0.15F;
+		final int NEW_LINE = 1;
 
 		// Start tracking user input
 		Scanner userInput = new Scanner(System.in);
 
 		// Request information about users meal & store it
-		System.out.print("Enter the charge for the meal: $");
+		ConsoleWrite("Enter the charge for the meal: $", NEW_LINE);
 		charge = userInput.nextFloat();
 
 		// Calculate Tax, Tip, and Total
@@ -58,18 +59,46 @@ public class Chapter2
 		total 	= charge + tax + tip;
 
 		// Display calculations to user
-		System.out.println("- - - - - - - - - - - - - - - - - - -\n");
-		System.out.print("Meal Charge..$");
-		System.out.println(charge);
-		System.out.print("Tax..........$");
-		System.out.println(tax);
-		System.out.print("Tip..........$");
-		System.out.println(tip);
-		System.out.print("Total........$");
-		System.out.println(total);
+		ConsoleWrite("- - - - - - - - - - - - - - - - - - -\n", NEW_LINE);
+		ConsoleWrite("Meal Charge..$", 0);
+		ConsoleWrite(charge, NEW_LINE);
+		ConsoleWrite("Tax..........$", 0);
+		ConsoleWrite(tax, NEW_LINE);
+		ConsoleWrite("Tip..........$", 0);
+		ConsoleWrite(tip, NEW_LINE);
+		ConsoleWrite("Total........$", 0);
+		ConsoleWrite(total, NEW_LINE);
 
 
 		// Exit
 		System.exit(0);
 	}
+
+	private static void ConsoleWrite(String userString, int newLineToggle) {
+		if (newLineToggle == 1) {
+			System.out.println(userString);
+		}
+		else {
+			System.out.print(userString);
+		}
+	}
+
+	private static void ConsoleWrite(int userNum, int newLineToggle) {
+		if (newLineToggle == 1) {
+			System.out.println(userNum);
+		}
+		else {
+			System.out.print(userNum);
+		}
+	}
+
+	private static void ConsoleWrite(float userFloat, int newLineToggle) {
+		if (newLineToggle == 1) {
+			System.out.println(userFloat);
+		}
+		else {
+			System.out.print(userFloat);
+		}
+	}
+
 }
