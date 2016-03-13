@@ -211,7 +211,7 @@ public class GameOfLife {
         for (int column = 0; column < mapColumnLength; column++) {
             ConsoleWrite(FIRST_GEN_MAP[row][column] + " ", 0);
         }
-        ConsoleWrite("", NEW_LINE);
+        ConsoleWrite();
       }
     }
 
@@ -221,6 +221,11 @@ public class GameOfLife {
   // Lessens the wordiness of the System.out.print() and System.out.println() 
   // methods by becoming a wrapper function that handles either case based on 
   // parameter passed.
+    private static void ConsoleWrite() {
+        System.out.println();
+    }
+
+    // Main
     public static void ConsoleWrite(String userString, int newLineToggle) {
         if (newLineToggle == NEW_LINE) {
             System.out.println(userString);
@@ -238,11 +243,21 @@ public class GameOfLife {
         System.out.print(userNum);
       }
     }
+    
+    // Overloaded to handle floats
+    private static void ConsoleWrite(float userFloat, int newLineToggle) {
+      if (newLineToggle == 1) {
+        System.out.println(userFloat);
+      }
+      else {
+        System.out.print(userFloat);
+      }
+    }
 
   // Clears the console screen by spamming new lines
     public static void ClearConsole() {
       for (int count = 0; count < 20; count++) {
-        ConsoleWrite("", NEW_LINE);
+        ConsoleWrite();
       }
     }
 
