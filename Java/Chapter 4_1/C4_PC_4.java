@@ -53,9 +53,10 @@ public class C4_PC_4
         float userDesiredEarnedAmount, desiredAmountAsPennies;
         float currentPennyCount = 1.0F;
         int   dayNumber = 1;
+        final int NEW_LINE = 1;
 
         //Ask the user how much they need to earn
-        System.out.print("How much do you need to earn: $");
+        ConsoleWrite("How much do you need to earn: $", 0);
         // Retrieve and store the value
         //userDesiredEarnedAmount = userInput.nextFloat();
         userDesiredEarnedAmount = 2000;
@@ -66,10 +67,10 @@ public class C4_PC_4
            Use day one hard coded as it's a constant that we will
            start with day one with the value of 1 cent. No need
            to add conditional handling for const intital val */
-        System.out.println();
-        System.out.println("Day		Amount");
-        System.out.println("---		------");
-        System.out.println("1		$0.01");
+        ConsoleWrite();
+        ConsoleWrite("Day		Amount", NEW_LINE);
+        ConsoleWrite("---		------", NEW_LINE);
+        ConsoleWrite("1		$0.01", NEW_LINE);
 
         /* Compare pennies to pennies
            If the current count is less than or equal to what
@@ -84,14 +85,47 @@ public class C4_PC_4
 			             day      amount
 			   Return amount as pennies converted back to
 			   dollars before displaying it to the user */
-			System.out.println(dayNumber + "		" + "$" +
-							  (currentPennyCount / 100.0F));
+			ConsoleWrite(dayNumber + "		" + "$" +
+							  (currentPennyCount / 100.0F), NEW_LINE);
      	}
 		// Report to the user the number of days required
-		System.out.println();
-		System.out.println("It requires at least " + dayNumber +
-			               " days to earn $" + userDesiredEarnedAmount);
+		ConsoleWrite();
+		ConsoleWrite("It requires at least " + dayNumber +
+			               " days to earn $" + userDesiredEarnedAmount, NEW_LINE);
         // Exit
         System.exit(0);
     }
+
+
+    private static void ConsoleWrite() {
+        System.out.println();
+    }
+
+    private static void ConsoleWrite(String userString, int newLineToggle) {
+        if (newLineToggle == 1) {
+            System.out.println(userString);
+        }
+        else {
+            System.out.print(userString);
+        }
+    }
+
+    private static void ConsoleWrite(int userNum, int newLineToggle) {
+        if (newLineToggle == 1) {
+            System.out.println(userNum);
+        }
+        else {
+            System.out.print(userNum);
+        }
+    }
+
+    private static void ConsoleWrite(float userFloat, int newLineToggle) {
+        if (newLineToggle == 1) {
+            System.out.println(userFloat);
+        }
+        else {
+            System.out.print(userFloat);
+        }
+    }
+    
 }
