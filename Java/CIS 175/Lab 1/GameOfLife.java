@@ -4,6 +4,7 @@
  * Assignment: Lab #1
  * Date: 02/23/16 - 
  * Description: Text-only version of game "The Game of Life" 
+ * Version # 1
  * ################################################################################
 */
 
