@@ -17,7 +17,12 @@ public class GoLNeighborhood {
 	// Constructor(s) ----------------------------------------------------------
     
 	// Creates a new neighborhood using the 3x3 array provided
-    public GoLNeighborhood(GoLCell[][] cellNeighbors) {
+    public GoLNeighborhood(GoLCell[][] cellNeighbors) throws EmptyObjectException {
+    	// No empty neighborhoods
+    	if (cellNeighbors.length == 0 || cellNeighbors == null) {
+		  throw new EmptyObjectException("Neighborhood can not be empty.");
+		}
+		
       this.cellNeighbors = cellNeighbors;
     }
 

@@ -10,7 +10,9 @@
 public class GameOfLifeDriver {
 
 	public static void main(String[] args) {
-			
+
+		System.out.println("GoLCell Tests: " + testGoLCell() + "/1");
+
 	}
 
 	public static int testGoLCell() {
@@ -18,16 +20,16 @@ public class GameOfLifeDriver {
 		int passingTests = 0;
 
 
-		// updateCel()
+		// updateCell() Testing 
 
 			// Neighborhood that's empty
 			try {
-				updateCell(new GoLNeighborhood(new GoLCell[0][0]));
+				GoLNeighborhood testNeighborhood = new GoLNeighborhood(new GoLCell[0][0]);
 			} catch (EmptyObjectException error) {
-			    System.err.println("EmptyObjectException: " + e.getMessage());
+			    System.err.println("EmptyObjectException: " + error.getMessage());
 			}
-
-			// Neighborhood that doesn't contain cells
+			passingTests++;
+			// Neighborhood that doesn't contain proper cells
 
 			// Neighborhood that's larger than expected
 
