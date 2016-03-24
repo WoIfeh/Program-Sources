@@ -17,12 +17,19 @@ public class GoLNeighborhood {
 	// Constructor(s) ----------------------------------------------------------
     
 	// Creates a new neighborhood using the 3x3 array provided
-    public GoLNeighborhood(GoLCell[][] cellNeighbors) throws EmptyObjectException {
-    	// No empty neighborhoods
+    public GoLNeighborhood(GoLCell[][] cellNeighbors) throws EmptyObjectException, IndexOutOfBoundsException { 
+    	// Empty check
     	if (cellNeighbors.length == 0 || cellNeighbors == null) {
 		  throw new EmptyObjectException("Neighborhood can not be empty.");
 		}
-		
+
+		// Size check 
+		if (cellNeighbors.length != 3 || cellNeighbors[0].length != 3) {
+			System.out.println("Rows: " + cellNeighbors.length);
+			System.out.println("Columns: " + cellNeighbors[0].length);
+			throw new IndexOutOfBoundsException("Neighborhood must be a 3x3 array.");
+		}
+
       this.cellNeighbors = cellNeighbors;
     }
 

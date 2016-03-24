@@ -11,7 +11,7 @@ public class GameOfLifeDriver {
 
 	public static void main(String[] args) {
 
-		System.out.println("GoLCell Tests: " + testGoLCell() + "/1");
+		System.out.println("GoLCell Tests: " + testGoLCell() + "/2");
 
 	}
 
@@ -22,18 +22,22 @@ public class GameOfLifeDriver {
 
 		// updateCell() Testing 
 
-			// Neighborhood that's empty
 			try {
-				GoLNeighborhood testNeighborhood = new GoLNeighborhood(new GoLCell[0][0]);
+				// Neighborhood that's empty
+				GoLNeighborhood emptyNeighborhood = new GoLNeighborhood(new GoLCell[1][1]);
+				passingTests++;
+				// Neighborhood that's larger than expected
+				GoLNeighborhood largeNeighborhood = new GoLNeighborhood(new GoLCell[3][4]);
+				passingTests++;
 			} catch (EmptyObjectException error) {
 			    System.err.println("EmptyObjectException: " + error.getMessage());
+			} catch (IndexOutOfBoundsException error) {
+				System.err.println("IndexOutOfBoundsException: " + error.getMessage());
 			}
-			passingTests++;
-			// Neighborhood that doesn't contain proper cells
-
-			// Neighborhood that's larger than expected
 
 			// Neighborhood that's smaller than expected
+
+			// Neighborhood that doesn't contain proper cells
 
 			// Neighborhood that keeps a cell dead
 
