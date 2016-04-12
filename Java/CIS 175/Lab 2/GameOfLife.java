@@ -18,6 +18,15 @@ public class GameOfLife {
 	// Main
     public static void main(String[] args) {
 
+        GoLCell testingCell = new GoLCell(true);
+        if (testingCell.isAlive()) System.out.println("I'm alive");
+
+        GoLCell[][] testingNeighborhoodCells = new GoLCell[3][3];
+
+        GoLNeighborhood testingNeighborhood = new GoLNeighborhood(testingNeighborhoodCells);
+
+        GoLCell cellValue = testingNeighborhood.getCell(0, 0);
+        System.out.println("Cell value is " + cellValue);
     }
 
 }
