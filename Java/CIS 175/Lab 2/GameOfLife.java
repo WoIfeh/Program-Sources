@@ -25,8 +25,6 @@ public class GameOfLife {
 
         GoLNeighborhood testingNeighborhood = new GoLNeighborhood(testingNeighborhoodCells);
 
-        GoLCell cellValue = testingNeighborhood.getCell(0, 0);
-        System.out.println("Cell value is " + cellValue);
     }
 
 }
