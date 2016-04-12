@@ -30,7 +30,7 @@ public class GoLRandomInitializer {
 
     // Returns an array of cells
     public GoLCell[][] getCellArray() {
-        //
+        return new GoLCell[0][0];
     }
 
 }

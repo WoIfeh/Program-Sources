@@ -18,13 +18,24 @@ public class GameOfLife {
 	// Main
     public static void main(String[] args) {
 
-        GoLCell testingCell = new GoLCell(true);
-        if (testingCell.isAlive()) System.out.println("I'm alive");
+    // Local Variables
+    Scanner userInput = new Scanner(System.in);
+    boolean CONTINUE_PLAYING = true;
+    char NEXT_GEN_CHAR = 'n';
+    GoLBoard testingBoard = new GoLBoard();
 
-        GoLCell[][] testingNeighborhoodCells = new GoLCell[3][3];
+        while (CONTINUE_PLAYING) {
+            // Run an instance of the game
+            GoLDisplay.displayBoard(testingBoard);
 
-        GoLNeighborhood testingNeighborhood = new GoLNeighborhood(testingNeighborhoodCells);
+            // Determine if the user wants to continue playing
+            if (userInput.next().charAt(0) != NEXT_GEN_CHAR )
+              CONTINUE_PLAYING = false;
+        }
+
+    
+
+
 
     }
-
 }
