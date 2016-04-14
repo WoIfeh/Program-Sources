@@ -12,14 +12,7 @@ import java.util.*;
 public class GoLBoard {
     
     // Instance Variables
-    public int numRows    = 20, 
-               numColumns = 20;
-
-    private char LIFE_CHAR  = '0', 
-                 DEATH_CHAR = ' ';
-
-    private char[][] genOne = new char[numRows][numColumns];
-
+    protected GoLCell[][] gameBoard;
     private int currentRound;
     private int lastRoundBirths,
                 lastRoundDeaths;
@@ -29,20 +22,13 @@ public class GoLBoard {
 
     // Calls the overloaded constructor below with the default 
     // GoLRandomInitializer
-    // public GoLBoard() {
-    //     
-    // }
-
-    // Creates a new GoLBoard initialized by the provided initializer ::: GoLInitializer myInitializer
     public GoLBoard() {
+        this(new GoLRandomInitializer());
+    }
 
-      Random randomLifeOrDeath = new Random(2);
-
-      // Give life to random cells in the board
-      for (int row = 0; row < numRows; row++)
-        for (int column = 0; column < numColumns; column++)
-          this.genOne[row][column] = randomLifeOrDeath.nextBoolean() ? 
-            LIFE_CHAR : DEATH_CHAR;
+    // Creates a new GoLBoard initialized by the provided initializer
+    public GoLBoard(GoLInitializer myInitializer) {
+        this.gameBoard = myInitializer.getCellArray();
     }
 
     // Method(s) ---------------------------------------------------------------
@@ -51,18 +37,35 @@ public class GoLBoard {
     // of the individual cells, passing a GoLNeighborhood to them. Returns the 
     // updated board
     // public GoLBoard nextRound() {
-    //     //
+    //     this.currentRound++;
     // }
     
-    // // Returns the cell at the specified coordinates
-    // public GoLCell getCell(int x, int y) {
-    //     //
-    // }
+    // Returns the cell at the specified coordinates
+    public GoLCell getCell(int x, int y) {
+        return gameBoard[x][y];
+    }
 
-    // // Returns a copy of the current board
-    // public GoLBoard copyBoard() {
-    //     //
-    // }
+    // Returns a copy of the current board
+    public GoLBoard copyBoard() {
+        int numRows = this.gameBoard.length;
+        int numColumns = this.gameBoard[0].length;
+
+        // Blank board for original value comparisons
+        GoLCell[][] boardCopy = new GoLCell[numRows][numColumns];
+
+        GoLBoard tempBoard = new GoLBoard();
+
+          // Loop through each element of the original board, and create a duplicate board
+          for (int row = 0; row <= numRows - 1; row++) {
+            for (int column = 0; column <= numColumns - 1; column++) {
+              boardCopy[row][column] = this.gameBoard[row][column];
+            }
+          }
+
+          tempBoard.gameBoard = boardCopy;
+
+          return tempBoard;
+    }
 
     // // Re-initializes the board
     // public GoLBoard reset() {
@@ -87,11 +90,6 @@ public class GoLBoard {
     // Returns the number of deaths from last round
     public int getDeaths() {
         return this.lastRoundDeaths;
-    }
-
-    // Returns the array of the board?
-    public char[][] getBoardArray() {
-        return this.genOne;
     }
 
 }

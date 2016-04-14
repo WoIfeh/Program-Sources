@@ -17,12 +17,7 @@ public class GoLNeighborhood {
 	// Constructor(s) ----------------------------------------------------------
     
 	// Creates a new neighborhood using the 3x3 array provided
-    public GoLNeighborhood(GoLCell[][] cellNeighbors) throws IndexOutOfBoundsException { 
-		// Error check 
-		if (cellNeighbors.length != 3 || cellNeighbors[0].length != 3) {
-			throw new IndexOutOfBoundsException("Neighborhood must be a 3x3 array.");
-		}
-
+    public GoLNeighborhood(GoLCell[][] cellNeighbors) { 
       this.cellNeighbors = cellNeighbors;
     }
 
@@ -30,6 +25,6 @@ public class GoLNeighborhood {
 	
 	// Gets the cell at coordinates x,y in the neighborhood
 	public GoLCell getCell(int x, int y) {
-	  return new GoLCell(true);
+	  return cellNeighbors[x][y];
 	}
 }

@@ -9,13 +9,6 @@
 // Includes
 import java.util.*;
 
-public class GoLInitializer {
-
-    // Method(s) --------------------------------------------------------------
-    
-    // Returns an array of cells
-    public GoLCell[][] getCellArray() {
-        return new GoLCell[0][0];
-    }
-
+public interface GoLInitializer {
+    public GoLCell[][] getCellArray();
 }

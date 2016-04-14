@@ -13,17 +13,18 @@ import java.util.*;
 public class GoLDisplay {
     
     // Instance Variables
+   private char LIFE_CHAR  = '0', 
+                DEATH_CHAR = ' ';
 
     // Constructor(s) ---------------------------------------------------------
 
-    // Creates a new display object
     public GoLDisplay() {
         //
     }
 
     // Method(s) --------------------------------------------------------------
     // Outputs the current board along with round number, births and deaths
-    public static void displayBoard(GoLBoard gameBoard) {
+    public void displayBoard(GoLBoard gameBoard) {
 
         // Print the current round number
         System.out.println("--------------- Round " + 
@@ -34,10 +35,9 @@ public class GoLDisplay {
                            gameBoard.getDeaths());
 
         // Print the contents of each cell
-        for (int row = 0; row < gameBoard.numRows; row++) {
-            for (int column = 0; column < gameBoard.numColumns; column++) {
-                System.out.print(gameBoard.getBoardArray()[row][column] + 
-                                   " ");
+        for (int row = 0; row < 20; row++) {
+            for (int column = 0; column < 20; column++) {
+                System.out.print((gameBoard.getCell(row, column).isAlive()) ? LIFE_CHAR : DEATH_CHAR);
             }
             System.out.println("");
           }

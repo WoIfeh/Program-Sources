@@ -19,14 +19,20 @@ public class GameOfLife {
     public static void main(String[] args) {
 
     // Local Variables
-    Scanner userInput = new Scanner(System.in);
     boolean CONTINUE_PLAYING = true;
-    char NEXT_GEN_CHAR = 'n';
+    final char NEXT_GEN_CHAR = 'n';
     GoLBoard testingBoard = new GoLBoard();
+    GoLDisplay mapDisplay = new GoLDisplay();
+    Scanner userInput = new Scanner(System.in);
+
+    // Display the initially generated board
+    mapDisplay.displayBoard(testingBoard);
 
         while (CONTINUE_PLAYING) {
             // Run an instance of the game
-            GoLDisplay.displayBoard(testingBoard);
+
+            // Display the next round
+            mapDisplay.displayBoard(testingBoard);
 
             // Determine if the user wants to continue playing
             if (userInput.next().charAt(0) != NEXT_GEN_CHAR )
