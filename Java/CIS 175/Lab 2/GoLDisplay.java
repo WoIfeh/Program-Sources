@@ -14,7 +14,7 @@ public class GoLDisplay {
     
     // Instance Variables
    private char LIFE_CHAR  = '0', 
-                DEATH_CHAR = ' ';
+                DEATH_CHAR = '-';
 
     // Constructor(s) ---------------------------------------------------------
 

@@ -30,6 +30,7 @@ public class GameOfLife {
 
         while (CONTINUE_PLAYING) {
             // Run an instance of the game
+            testingBoard.nextRound();
 
             // Display the next round
             mapDisplay.displayBoard(testingBoard);

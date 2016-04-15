@@ -25,6 +25,6 @@ public class GoLNeighborhood {
 	
 	// Gets the cell at coordinates x,y in the neighborhood
 	public GoLCell getCell(int x, int y) {
-	  return cellNeighbors[x][y];
+	  return this.cellNeighbors[x][y];
 	}
 }
