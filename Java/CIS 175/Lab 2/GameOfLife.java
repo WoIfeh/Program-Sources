@@ -1,10 +1,10 @@
 /*
  * ################################################################################
  * Name: Billy Hart
- * Assignment: Lab #1
- * Date: 02/23/16 - 
- * Description: Text-only version of game "The Game of Life" 
- * Version # 1
+ * Assignment: Lab #2
+ * Date: 02/23/2016 - 04/15/2016
+ * Description: Text-only version of game "The Game of Life" using OOP paradigm
+ * Version # 2
  * ################################################################################
 */
 

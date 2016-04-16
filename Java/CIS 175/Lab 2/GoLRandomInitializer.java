@@ -1,7 +1,7 @@
 /*
  * ############################################################################
  * Name: Billy Hart
- * Date: Tue Apr 12 15:51:34 2016
+ * Date: Tue Apr 12 15:51:34 2016 - Fri Apr 15 21:29:06 2016
  * Description: This class implements an interface for initializing a board.
  * ############################################################################
 */
@@ -32,7 +32,6 @@ public class GoLRandomInitializer implements GoLInitializer {
 
     // Creates new GoLRandomInitializer with a given seed
     public GoLRandomInitializer(long seed) {
-
         Random randomLifeOrDeath = new Random(seed);
     
         // Give life to random *predicted* cells in the board

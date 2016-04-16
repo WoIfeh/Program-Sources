@@ -1,8 +1,7 @@
 /*
  * ############################################################################
  * Name: Billy Hart
- * Lab: 2
- * Date: 03/15/16
+ * Date: 03/15/2016 - 04/15/2016
  * Description: Creates a new cell that is alive if the parameter is true or 
  *              false otherwise
  * #############################################################################
@@ -30,17 +29,18 @@ public class GoLCell {
         boolean stateOfCell = false;
         int numAlive = 0;
 
-       for (int row = 0; row < 3; row++) {
-           for (int column = 0; column < 3; column++) {
-                    try { if (myNeighborhood.getCell(row, column).isAlive())
-                            numAlive++;
-                    } catch (NullPointerException e) {}
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 3; column++) {
+                try { if (myNeighborhood.getCell(row, column).isAlive())
+                        numAlive++;
+                } catch (NullPointerException e) {}
             }
         }
 
         // Check to see if the current cell is alive or dead
-       stateOfCell = myNeighborhood.getCell(1, 1).isAlive();
-            
+        stateOfCell = myNeighborhood.getCell(1, 1).isAlive();
+           
+        // Apply game rules to neighbors 
         if (stateOfCell) {
             numAlive--;
             if (numAlive > 3 || numAlive < 2)
@@ -50,16 +50,11 @@ public class GoLCell {
                 stateOfCell = true;
         }
 
-      return stateOfCell;
+        return stateOfCell;
 	}
 
 	// Returns true if alive and false if dead
 	public boolean isAlive() {
-	  return this.cellStatus;
+	   return this.cellStatus;
 	}
-
-    // Returns the boolean value of a cell
-    public String toString() {
-        return (this.cellStatus) ? "0" : "-";
-    }
 }

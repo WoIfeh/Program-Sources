@@ -1,8 +1,7 @@
 /*
  * #############################################################################
  * Name: Billy Hart
- * Lab: 2
- * Date: 03/15/16
+ * Date: 03/15/2016 - 04/15/2016
  * Description: This class implements a model for the neighborhood of an 
  *              individual cell.
  * #############################################################################
