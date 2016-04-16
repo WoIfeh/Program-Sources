@@ -13,7 +13,7 @@ public class GoLBoard {
     
     // Instance Variables
     protected GoLCell[][] gameBoard;
-    private int currentRound;
+    private static int currentRound = 1;
     private int lastRoundBirths,
                 lastRoundDeaths;
 
@@ -23,7 +23,7 @@ public class GoLBoard {
     // Calls the overloaded constructor below with the default 
     // GoLRandomInitializer
     public GoLBoard() {
-        this(new GoLRandomInitializer(2));
+        this(new GoLRandomInitializer());
     }
 
     // Creates a new GoLBoard initialized by the provided initializer
@@ -42,30 +42,29 @@ public class GoLBoard {
         GoLNeighborhood cNeighborhood;
 
         // Update the round count
-        this.currentRound++;
+        updatedBoard.currentRound++;
 
         // Reset the births/deaths counter
         this.lastRoundBirths = 0;
         this.lastRoundDeaths = 0;
         
         // Create a copy of the board
-        updatedBoard.gameBoard = this.gameBoard;
+        updatedBoard = this.copyBoard();
 
         for (int row = 0; row < 20; row++) {
             for (int column = 0; column < 20; column++) {
                 // Grab the neighbors of the cell
                 cNeighborhood = new 
-                GoLNeighborhood(updatedBoard.getNeighbors(row,column, updatedBoard));
+                GoLNeighborhood(this.getNeighbors(row,column, this));
 
                 // Update the cell based on the neighbors
-                if (updatedBoard.getCell(row,column).updateCell(cNeighborhood)) {
-                    this.lastRoundBirths++;
+                if (this.getCell(row,column).updateCell(cNeighborhood)) {
+                    updatedBoard.lastRoundBirths++;
                     updatedBoard.gameBoard[row][column] = new GoLCell(true);
                 } else {
-                    this.lastRoundDeaths++;
+                    updatedBoard.lastRoundDeaths++;
                     updatedBoard.gameBoard[row][column] = new GoLCell(false);
                 }
-                
             }
         }
         
@@ -138,13 +137,6 @@ public class GoLBoard {
         try { cCells[2][2] = new GoLCell((cellBoard.getCell(xPos + 1, yPos + 1).isAlive()) ? true : false);
         } catch (IndexOutOfBoundsException e) {}
         
-        // ** DEBUG: Prints out a neighborhood 
-        // for (int roww = 0; roww < 3; roww++) {
-        //     for (int columnn = 0; columnn < 3; columnn++) {
-        //         System.out.print(" " + cCells[roww][columnn] + " ");
-        //     }
-        //     System.out.println(""); 
-        // }
         return cCells;
     }
 

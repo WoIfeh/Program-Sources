@@ -30,17 +30,19 @@ public class GoLCell {
         boolean stateOfCell = false;
         int numAlive = 0;
 
-	   // Check to see if the current cell is alive or dead
-       stateOfCell = myNeighborhood.getCell(1, 1).isAlive();
-
-       for (int row = 0; row < 3; row++)
+       for (int row = 0; row < 3; row++) {
            for (int column = 0; column < 3; column++) {
-                try { if (myNeighborhood.getCell(row, column).isAlive())
-                        numAlive++;
-                } catch (NullPointerException e) {}
+                    try { if (myNeighborhood.getCell(row, column).isAlive())
+                            numAlive++;
+                    } catch (NullPointerException e) {}
             }
-           
+        }
+
+        // Check to see if the current cell is alive or dead
+       stateOfCell = myNeighborhood.getCell(1, 1).isAlive();
+            
         if (stateOfCell) {
+            numAlive--;
             if (numAlive > 3 || numAlive < 2)
                 stateOfCell = false;
         } else {
